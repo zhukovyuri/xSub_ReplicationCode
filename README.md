@@ -1,11 +1,15 @@
----
-title: xSub Replication Code
-...
+xSub Replication Code
+=====================
+
+This repository contains R code to replicate all data files at
+<http://www.x-sub.org>.
+
+-   xSub version 1.0, February 2018.
 
 System Requirements
 ===================
 
-Successful replication of xSub aggregation scripts requires:
+Successful execution of xSub replication scripts requires:
 
 -   4-core processor, 16 GB RAM (recommended: 16-core, 64 GB RAM)
 
@@ -52,13 +56,84 @@ to executing R scripts.
         (aggregated event counts from data source XXX)
 
     -   `/Output/Output_Covariates`\
-        (aggregated PSEG control variables, various sources)
+        (aggregated control variables, various sources)
 
 -   `/Data/Upload`\
     (output data files created for website upload, csv format)
 
     -   `/Upload/data_csv_country`\
         (aggregated event counts, .csv format, by country, by source)
+
+Overview of Code
+================
+
+The process of converting raw input datasets into web-ready aggregates
+entails five steps:
+
+1.  **Actor and action dictionaries** (`Code/step1_dictionary/`).
+    Because each data source uses a unique actor and action typology,
+    xSub uses a separate dictionary for each conflict and source to map
+    disparate actors mentioned in event reports to our categories of
+    `SIDEA`, `SIDEB`, `SIDEC`, `SIDED`, and to map reported actions to
+    our categories of `ANY`, `SEL`, `IND`, `PRT`.
+
+    -   <span>*To create your own actor and event dictionaries*</span>:
+        For each data source that requires an actor dictionary (e.g.
+        GED, SCAD, etc.), there is a corresponding script
+        (`step1_dictionary_GED.R`, `step1_dictionary_SCAD.R`, etc.),
+        which runs through every actor mentioned in the raw data, and
+        queries the user to specify whether the actor
+        is government/rebel/civilian/other. xSub uses a different source
+        code (`step1_dictionary_EventType.R`) to similarly create a
+        multi-source action dictionary from event descriptions in the
+        raw text data.
+
+    -   <span>*To use pre-existing xSub dictionaries*</span>: skip this
+        step and proceed to step 2.
+
+2.  **Event coding and aggregation** (`Code/step2_eventcode/`). Once an
+    actor dictionary for a data source is created, the next step is to
+    classify individual events and aggregate them to consistent
+    spatio-temporal units of analysis. For each data source, there is a
+    set of (usually) two aggregation scripts:
+
+    1.  `step2_eventcode1_XXX.R`: Code to classify events by actor and
+        tactics, using dictionaries created in step 1.
+
+    2.  `step2_eventcode2_XXX.R`: Code to sum individual events by
+        administrative unit (country, province, district) or PRIO grid
+        cell, and unit of time (year, month, week, day), and write
+        aggregate event counts to file, for each country and level of
+        aggregation, in RData format.
+
+3.  **Covariate coding and aggregation** (`Code/step3_covariates/`). In
+    addition to violent events, xSub also includes data on political,
+    socio-economic, ethno-linguistic and geographic covariates, for each
+    country, at each level of analysis. This process can proceed
+    independently of event coding (steps 1 and 2), and is governed by
+    the code `step3_covariates_parallel.R` (also,
+    `step3_weather_parallel.R`). Most of the raw data used in this step
+    are in the format of GIS shapefiles or raster images, with global
+    coverage. This code creates boundary shapefiles corresponding to
+    each spatial level of analysis – administrative unit (country,
+    province, district) or PRIO grid cell – and calculates summary
+    statistics for the relevant covariates within each spatial unit. It
+    writes the output data to file, for each country and level of
+    aggregation, in RData format.
+
+4.  **Merge and export** (`Code/step4_merge/`, depends on
+    `Code/step4x_variable_select.R`). The file `step4_merge1.R` merges
+    the event counts with covariates, for each country and level of
+    analysis, and writes the individual country files to disk. The
+    `step4_merge2.R` script concatenates the individual files into a
+    large matrix, for each data source and level of aggregation, and
+    writes the file to disk, in csv format. These are the processed csv
+    files that are uploaded to the xSub server for public use.
+
+5.  **Maps and graphics** (`Code/step5_maps/`). In addition to event
+    coding, aggregation and merging files, we include scripts to
+    replicate the data visualizations featured on the xSub website
+    (`step5_maps.R`).
 
 Input Data Sources
 ==================
@@ -384,74 +459,3 @@ The following geospatial datasets should be placed in the
         DE: Department of Geography University of Delaware, 2015.
 
     -   <https://www.esrl.noaa.gov/psd/data/gridded/data.UDel_AirT_Precip.html>
-
-Overview of Code
-================
-
-The process of converting raw input datasets into web-ready aggregates
-entails five steps:
-
-1.  **Actor and action dictionaries** (`Code/step1_dictionary/`).
-    Because each data source uses a unique actor and action typology,
-    xSub uses a separate dictionary for each conflict and source to map
-    disparate actors mentioned in event reports to our categories of
-    `SIDEA`, `SIDEB`, `SIDEC`, `SIDED`, and to map reported actions to
-    our categories of `ANY`, `SEL`, `IND`, `PRT`.
-
-    -   <span>*To create your own actor and event dictionaries*</span>:
-        For each data source that requires an actor dictionary (e.g.
-        GED, SCAD, etc.), there is a corresponding script
-        (`step1_dictionary_GED.R`, `step1_dictionary_SCAD.R`, etc.),
-        which runs through every actor mentioned in the raw data, and
-        queries the user to specify whether the actor
-        is government/rebel/civilian/other. xSub uses a different source
-        code (`step1_dictionary_EventType.R`) to similarly create a
-        multi-source action dictionary from event descriptions in the
-        raw text data.
-
-    -   <span>*To use pre-existing xSub dictionaries*</span>: skip this
-        step and proceed to step 2.
-
-2.  **Event coding and aggregation** (`Code/step2_eventcode/`). Once an
-    actor dictionary for a data source is created, the next step is to
-    classify individual events and aggregate them to consistent
-    spatio-temporal units of analysis. For each data source, there is a
-    set of (usually) two aggregation scripts:
-
-    1.  `step2_eventcode1_XXX.R`: Code to classify events by actor and
-        tactics, using dictionaries created in step 1.
-
-    2.  `step2_eventcode2_XXX.R`: Code to sum individual events by
-        administrative unit (country, province, district) or PRIO grid
-        cell, and unit of time (year, month, week, day), and write
-        aggregate event counts to file, for each country and level of
-        aggregation, in RData format.
-
-3.  **Covariate coding and aggregation** (`Code/step3_covariates/`). In
-    addition to violent events, xSub also includes data on political,
-    socio-economic, ethno-linguistic and geographic covariates, for each
-    country, at each level of analysis. This process can proceed
-    independently of event coding (steps 1 and 2), and is governed by
-    the code `step3_covariates_parallel.R` (also,
-    `step3_weather_parallel.R`). Most of the raw data used in this step
-    are in the format of GIS shapefiles or raster images, with global
-    coverage. This code creates boundary shapefiles corresponding to
-    each spatial level of analysis – administrative unit (country,
-    province, district) or PRIO grid cell – and calculates summary
-    statistics for the relevant covariates within each spatial unit. It
-    writes the output data to file, for each country and level of
-    aggregation, in RData format.
-
-4.  **Merge and export** (`Code/step4_merge/`, depends on
-    `Code/step4x_variable_select.R`). The file `step4_merge1.R` merges
-    the event counts with covariates, for each country and level of
-    analysis, and writes the individual country files to disk. The
-    `step4_merge2.R` script concatenates the individual files into a
-    large matrix, for each data source and level of aggregation, and
-    writes the file to disk, in csv format. These are the processed csv
-    files that are uploaded to the xSub server for public use.
-
-5.  **Maps and graphics** (`Code/step5_maps/`). In addition to event
-    coding, aggregation and merging files, we include scripts to
-    replicate the data visualizations featured on the xSub website
-    (`step5_maps.R`).
