@@ -1,0 +1,5 @@
+load("/Users/yurizhukov/Dropbox (Zhukov research team)/XSub/Data/Dictionaries/ACLED/AFGHANISTAN_Actors.RData")
+ls()
+actors
+actors_GOV
+actors_REB

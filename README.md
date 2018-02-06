@@ -1,4 +1,8 @@
-xSub Replication Code
+---
+title: xSub Replication Code
+...
+
+xSub Replication Code {#xsub-replication-code .unnumbered}
 =====================
 
 This repository contains R code to replicate all data files at
@@ -33,13 +37,17 @@ Workspace
 =========
 
 This repository contains several directories for input and output xSub
-data files, and code. Users should clone this directory structure prior
-to executing R scripts.
+data files, and code. Users should clone the following directory
+structure prior to executing R scripts.
 
 -   `/Code`\
     (event extraction, classification and aggregation code)
 
+-   `/Dictionaries`\
+    (actor and event dictionaries)
+
 -   `/Input`\
+    (not included in GitHub repository)\
     (all input data files, various formats)
 
     -   `/Input/Events`\
@@ -49,6 +57,7 @@ to executing R scripts.
         (raw data for control variables, GIS layers, borders, etc.)
 
 -   `/Output`\
+    (not included in GitHub repository)\
     (intermediate output data files **not** created for website upload,
     csv format)
 
@@ -59,6 +68,7 @@ to executing R scripts.
         (aggregated control variables, various sources)
 
 -   `/Data/Upload`\
+    (not included in GitHub repository)\
     (output data files created for website upload, csv format)
 
     -   `/Upload/data_csv_country`\
