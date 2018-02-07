@@ -1,8 +1,4 @@
----
-title: xSub Replication Code
-...
-
-xSub Replication Code {#xsub-replication-code .unnumbered}
+xSub Replication Code 
 =====================
 
 This repository contains R code to replicate all data files at
