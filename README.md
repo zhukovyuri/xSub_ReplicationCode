@@ -306,7 +306,6 @@ The following event datasets should be placed in the `/Input/Events`
 
     -   <http://www.snpk-indonesia.com/>
 
-<<<<<<< HEAD
 -   [Northern Ireland Research Initiative (NIRI)](https://niresearchinitiative.weebly.com/)
 
     -   Davenport, Christian, Cyanne Loyle, and Christopher Sullivan. 
