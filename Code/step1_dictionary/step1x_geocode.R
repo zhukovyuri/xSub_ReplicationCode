@@ -1,8 +1,8 @@
 rm(list=ls())
 
 ## Set directory
-#setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
-setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
+setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
+# setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 # setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 
 ## Install & load packages (all at once)
@@ -1362,6 +1362,7 @@ tail(beissinger.raw)
 
 
 
+
 #############################
 ## Geocode: ABA
 #############################
@@ -1369,8 +1370,8 @@ tail(beissinger.raw)
 rm(list=ls())
 
 ## Set directory
-#setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
-setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
+setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
+# setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 # setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 
 ## Install & load packages (all at once)
@@ -1384,103 +1385,38 @@ source("Code/functions.R")
 data <- read.csv("Input/Events/ABA/ABA_Database2.csv")
 head(data)
 
+# Village locations
+data$PPL1 <- gsub("(\\b[a-z]{1})", "\\U\\1" ,gdata::trim(tolower(as.character(data$Village))), perl=TRUE)
+data$PPL2 <- gsub("(\\b[a-z]{1})", "\\U\\1" ,gdata::trim(tolower(as.character(data$LOC))), perl=TRUE)
+data$PPL2[data$LOC==1] <- data$PPL1[data$LOC==1]
+
 ## Recoding Districts from codes to regions
 unique(data$District)
 data$DISTRICT_RENAME <- NA
 data[data$Distric == "1", ][, "DISTRICT_RENAME"] <- "North Darfur"
 data[data$District == "2", ][, "DISTRICT_RENAME"] <- "West Darfur"
 data[data$District == "3", ][, "DISTRICT_RENAME"] <- "South Darfur"
-data[data$District == "99", ][, "DISTRICT_RENAME"] <- "NA"
+data[data$District == "99", ][, "DISTRICT_RENAME"] <- "Darfur"
 
 ##adding a column for the country
 data$COUNTRY <- "Sudan"
 data$ISO3 <- "SDN"
 
-#Replacing names
-data$Village <- gsub("AA-DAAR","North Darfur",data$Village)
-data$Village <- gsub("AB GANURA","West Darfur",data$Village)
-data$Village <- gsub("YOURI","West Darfur",data$Village)
-data$Village <- gsub("WADI-NYALA","Wadi Nyala",data$Village)
-data$Village <- gsub("WADI NYALA","Wadi Nyala",data$Village)
-data$Village <- gsub("WALIGY VILLAGE","Darfur",data$Village)
-data$Village <- gsub("ABBON","Darfur",data$Village)
-data$Village <- gsub("ABBONNE","West Darfur",data$Village)
-data$Village <- gsub("ABBONNEY","West Darfur",data$Village)
-#data$Village <- tolower(data$Village)
-data$Village <- gsub("TURKENYA","Darfur",data$Village)
-data$Village <- gsub("MESKEE","North Darfur",data$Village)                                         
-data$Village <- gsub("ADARE","North Darfur",data$Village)
-data$Village <- gsub("ADARE","North Darfur",data$Village)
-data$Village <- gsub("GASUMBA","North Darfur",data$Village)
-data$Village <- gsub("HILAFOK","Darfur",data$Village)
-data$Village <- gsub("KANALA","North Darfur",data$Village)
-data$Village <- gsub("GOW-GALG","North Darfur",data$Village)                                           
-data$Village <- gsub("ABUGAMBRA","North Darfur",data$Village)                                          
-data$Village <- gsub("GONDOLAT","North Darfur",data$Village)  
-data$Village <- gsub("HILA LIA","Darfur",data$Village)
-data$Village <- gsub("UM DNESAIR","North Darfur",data$Village)                                          
-data$Village <- gsub("JANJA","North Darfur",data$Village)                                         
-data$Village <- gsub("HARUMBA","North Darfur",data$Village) 
-data$Village <- gsub("FOUNOU","North Darfur",data$Village)
-data$Village <- gsub("ABU DJIRAT","North Darfur",data$Village)
-data$Village <- gsub("LOOKA","North Darfur",data$Village)                                       
-data$Village <- gsub("KAMO","North Darfur",data$Village)
-data$Village <- gsub("GANGA","North Darfur",data$Village)
-data$Village <- gsub("URGO","North Darfur",data$Village)
-data$Village <- gsub("HILELEIA","North Darfur",data$Village)
-data$Village <- gsub("NOWRA","North Darfur",data$Village)
-data$Village <- gsub("JUBAL","North Darfur",data$Village)
-data$Village <- gsub("GURBRI","North Darfur",data$Village)
-data$Village <- gsub("HARAR","North Darfur",data$Village)
-data$Village <- gsub("JANGA","North Darfur",data$Village)
-data$Village <- gsub("ABUDRUS","North Darfur",data$Village)
-data$Village <- gsub("ARABDA","North Darfur",data$Village)                                             
-data$Village <- gsub("MATAKARGI","North Darfur",data$Village)
-data$Village <- gsub("HILIYA","North Darfur",data$Village)                                        
- 
-data$Village <- gsub("DAJIRBA","North Darfur",data$Village)
-data$Village <- gsub("ABU GAMBRA","North Darfur",data$Village)
-data$Village <- gsub("ABU GARIRA","North Darfur",data$Village)
-data$Village <- gsub("ABU GIDAD","North Darfur",data$Village)
-data$Village <- gsub("ABU GOMRA","North Darfur",data$Village)
-data$Village <- gsub("Abu Gran","North Darfur",data$Village)
-data$Village <- gsub("ABU GUMERA","North Darfur",data$Village)
-data$Village <- gsub("HILIYA","North Darfur",data$Village)
-data$Village <- gsub("HILIYA","North Darfur",data$Village)                                           
-data$Village <- gsub("ABUGOMRA","North Darfur",data$Village)                                           
-data$Village <- gsub("ABUGURMARA","North Darfur",data$Village)
-data$Village <- gsub("ABUGUMRA","North Darfur",data$Village)                                         
-data$Village <- gsub("Abulah","North Darfur",data$Village)                                            
-data$Village <- gsub("ABULEHE","North Darfur",data$Village)                                          
-data$Village <- gsub("ABULIYAH","Darfur",data$Village)  
-data$Village <- gsub("Abunette","North Darfur",data$Village)                                                      
-data$Village <- gsub("ADELHARE","North Darfur",data$Village) 
-data$Village <- gsub("ADARH","North Darfur",data$Village)                       
-
-                                            
-                                          
-                              
-data$Village <- gsub("koutoum (koah)","Kutum",data$Village)
-data$Village <- gsub("amgalia (beida)","West Darfur",data$Village)
-data$Village <- gsub("ABOUSOGO","West Darfur",data$Village)
-data$Village <- gsub("ABSUROOJ","West Darfur",data$Village) 
-data$Village <- gsub("ABU JIDAD","West Darfur",data$Village)
-data$Village <- gsub("ABUGAMERA","West Darfur",data$Village)
-data$Village <- gsub("ABUMGERY","West Darfur",data$Village)
-data$Village <- gsub("ABUN","West Darfur",data$Village)                                          
-data$Village <- gsub("ABUNE","West Darfur",data$Village) 
-data$Village <- gsub("ADETA","West Darfur",data$Village)
-
-                                          
-data$DISTRICT_RENAME <- gsub("NA","Darfur",data$DISTRICT_RENAME)
 dim(data)#22720 BY 25
 head(data)
 tail(data)
 
 #Geocoding
-geo.mat <- data.frame(LOCATION=paste(data$DISTRICT_RENAME,data$COUNTRY, sep=", "),ADDRESS="",LONG=NA,LAT=NA)
+locz <- gdata::trim(paste0(data$PPL2,", ",data$COUNTRY))
+locz2 <- gdata::trim(paste0(data$PPL1,", ",data$COUNTRY))
+locz3 <- gdata::trim(paste0(data$DISTRICT_RENAME,", ",data$COUNTRY))
+locz4 <- gdata::trim(paste0(data$PPL2,", ",data$DISTRICT_RENAME))
+geo.mat <- data.frame(LOCATION=locz,ADDRESS="",LONG=NA,LAT=NA,LOCATION2=locz2,LOCATION3=locz3,LOCATION4=locz4)
 geo.mat$ADDRESS <- as.character(geo.mat$ADDRESS)
 geo.mat$LOCATION <- as.character(geo.mat$LOCATION)
+geo.mat$LOCATION2 <- as.character(geo.mat$LOCATION2)
+geo.mat$LOCATION3 <- as.character(geo.mat$LOCATION3)
+geo.mat$LOCATION4 <- as.character(geo.mat$LOCATION4)
 
 # Unique locations
 geo.mat2 <- data.frame(LOCATION=sort(unique(geo.mat$LOCATION)),ADDRESS="",LONG=NA,LAT=NA)
@@ -1490,23 +1426,30 @@ geo.mat2$LOCATION <- as.character(geo.mat2$LOCATION)
 # Initial pass (w/ Google)
 i <- 2
 for(i in 1:nrow(geo.mat2)){
-  geo.out <- geoCode(geo.mat2$LOCATION[i],key=TRUE)
+  geo.out <- geoCode(geo.mat2$LOCATION[i],key=FALSE)
   print(paste(i,"of",nrow(geo.mat2)," ",geo.out[4]))
   geo.mat2$ADDRESS[i] <- geo.out[4]
   geo.mat2$LONG[i] <- geo.out[2]
   geo.mat2$LAT[i] <- geo.out[1]
 }
+geo.mat2.backup <- geo.mat2
+geo.mat2$LONG[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[!grepl("Sudan$",geo.mat2$ADDRESS)] <- ""
+geo.mat2$LONG[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[grepl("^Sudan$",geo.mat2$ADDRESS)] <- ""
 tail(geo.mat2)
 #i <- 134
-save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP.RData")
-load("Input/Events/ABA/ABA_GEO_TEMP.RData")
-head(geo.mat2)
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP_v2.RData")
+# load("Input/Events/ABA/ABA_GEO_TEMP_v2.RData")
+summary(geo.mat2)
 tail(geo.mat2)
 
 # Fill out missing (w/ paid Google API key: set key=TRUE)
 is.miss <- which(is.na(geo.mat2$LONG))
 prop.miss <- length(is.miss)/nrow(geo.mat2)
-while(prop.miss>.05){
+while(prop.miss>.5){
   print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
   for(i in rev(is.miss)){
     geo.out <- geoCode(address = geo.mat2$LOCATION[i],key=TRUE)
@@ -1519,100 +1462,211 @@ while(prop.miss>.05){
   is.miss <- which(is.na(geo.mat2$LONG))
   prop.miss <- length(is.miss)/nrow(geo.mat2)
 }
-save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP2.Rdata")
-#load("Input/Events/ABA/ABA_GEO_TEMP2.RData")
+geo.mat2.backup <- geo.mat2
+geo.mat2$LONG[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[!grepl("Sudan$",geo.mat2$ADDRESS)] <- ""
+geo.mat2$LONG[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[grepl("^Sudan$",geo.mat2$ADDRESS)] <- ""
+tail(geo.mat2)
+#i <- 134
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP2_v2.RData")
+# load("Input/Events/ABA/ABA_GEO_TEMP2_v2.RData")
 
-# # Simplified addresses
+# Alternative addresses
+geo.mat3 <- merge(geo.mat2,geo.mat[,c("LOCATION","LOCATION2","LOCATION3","LOCATION4")],by="LOCATION",all.x=T,all.y=F)
+geo.mat3 <- geo.mat3[!duplicated(geo.mat3$LOCATION),]
+mean(geo.mat3$LOCATION==geo.mat2$LOCATION)
+geo.mat2 <- geo.mat3; rm(geo.mat3)
+head(geo.mat2)
+
 is.miss <- which(is.na(geo.mat2$LONG))
 prop.miss <- length(is.miss)/nrow(geo.mat2)
-
-# remove street address (for still-missing locations)
-ss <- strsplit(geo.mat2[is.miss,"LOCATION"],", ")
-deltz <- sapply(ss,"[",1)
-deltz[grepl("^[[:upper:]]", deltz)] <- ""
-j <- 1
-while(sum(nchar(deltz)>0)>12){
-  for(j in 1:length(ss)){
-    if(nchar(deltz[j])>0){geo.mat2[is.miss,"LOCATION"][j] <- gsub(paste0(deltz[j],", "),"",geo.mat2[is.miss,"LOCATION"][j])}}
-  ss <- strsplit(geo.mat2[is.miss,"LOCATION"],", ")
-  deltz <- sapply(ss,"[",1)
-  deltz[grepl("^[[:upper:]]", deltz)] <- ""
-}
-geo.mat2[is.miss,"LOCATION"][50:80]
-# geo.mat2[is.miss,"LOCATION"] <- gsub("^(.*?), ","",geo.mat2[is.miss,"LOCATION"]) # remove street address (for still-missing locations)
-
-# Unique locations
-# Those that are still missing
-geo.mat3 <- data.frame(LOCATION=sort(unique(geo.mat2$LOCATION[is.miss])),ADDRESS="",LONG=NA,LAT=NA)
-geo.mat3$ADDRESS <- as.character(geo.mat3$ADDRESS)
-geo.mat3$LOCATION <- as.character(geo.mat3$LOCATION)
-head(geo.mat3)
-
-is.miss2 <- which(is.na(geo.mat3$LONG))
-prop.miss2 <- length(is.miss2)/nrow(geo.mat3)
-
-while(prop.miss2>.05){
-  print(paste("Proportion missing:",round(prop.miss2,2),"; N missing=",length(is.miss2)))
-  for(i in rev(is.miss2)){
-    geo.out <- geoCode(address = geo.mat3$LOCATION[i],key=TRUE)
+while(prop.miss>.5){
+  print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
+  for(i in rev(is.miss)){
+    geo.out <- geoCode(address = geo.mat2$LOCATION2[i],key=TRUE)
     # geo.out <- geoCode3(query = geo.mat2$LOCATION[i],boundingBox = paste0(c(bbx[2,2],bbx[1,1],bbx[2,1],bbx[1,2]),collapse=","))
-    print(paste(prop.miss2,i,geo.out[4]))
-    geo.mat3$ADDRESS[i] <- geo.out[4]
-    geo.mat3$LONG[i] <- geo.out[2]
-    geo.mat3$LAT[i] <- geo.out[1]
+    print(paste(i,geo.out[4]))
+    geo.mat2$ADDRESS[i] <- geo.out[4]
+    geo.mat2$LONG[i] <- geo.out[2]
+    geo.mat2$LAT[i] <- geo.out[1]
   }
-  save(geo.mat3,file="Input/Events/ABA/ABA_GEO_TEMP2.RData")
-  is.miss2 <- which(is.na(geo.mat3$LONG))
-  prop.miss2 <- length(is.miss2)/nrow(geo.mat3)
+  is.miss <- which(is.na(geo.mat2$LONG))
+  prop.miss <- length(is.miss)/nrow(geo.mat2)
 }
+geo.mat2.backup <- geo.mat2
+geo.mat2$LONG[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[!grepl("Sudan$",geo.mat2$ADDRESS)] <- ""
+geo.mat2$LONG[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[grepl("^Sudan$",geo.mat2$ADDRESS)] <- ""
+tail(geo.mat2)
+#i <- 134
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP3_v2.RData")
+# load("Input/Events/ABA/ABA_GEO_TEMP3_v2.RData")
 
-save(geo.mat3,file="Input/Events/ABA/ABA_GEO_TEMP2.RData")
-#load("Input/Events/ABA/ABA_GEO_TEMP2.RData")
+# Alternative addresses 2
+is.miss <- which(is.na(geo.mat2$LONG))
+prop.miss <- length(is.miss)/nrow(geo.mat2)
+while(prop.miss>.5){
+  print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
+  for(i in rev(is.miss)){
+    geo.out <- geoCode(address = as.character(geo.mat2$LOCATION4[i]),key=TRUE)
+    # geo.out <- geoCode3(query = geo.mat2$LOCATION[i],boundingBox = paste0(c(bbx[2,2],bbx[1,1],bbx[2,1],bbx[1,2]),collapse=","))
+    print(paste(i,geo.out[4]))
+    geo.mat2$ADDRESS[i] <- geo.out[4]
+    geo.mat2$LONG[i] <- geo.out[2]
+    geo.mat2$LAT[i] <- geo.out[1]
+  }
+  is.miss <- which(is.na(geo.mat2$LONG))
+  prop.miss <- length(is.miss)/nrow(geo.mat2)
+}
+geo.mat2.backup <- geo.mat2
+geo.mat2$LONG[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[!grepl("Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[!grepl("Sudan$",geo.mat2$ADDRESS)] <- ""
+geo.mat2$LONG[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$LAT[grepl("^Sudan$",geo.mat2$ADDRESS)] <- NA
+geo.mat2$ADDRESS[grepl("^Sudan$",geo.mat2$ADDRESS)] <- ""
+tail(geo.mat2)
+#i <- 134
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP4_v2.RData")
+# load("Input/Events/ABA/ABA_GEO_TEMP4_v2.RData")
+
+# Simplified addresses
+geo.mat2$GEOPRECISION <- "adm2"
+is.miss <- which(is.na(geo.mat2$LONG))
+prop.miss <- length(is.miss)/nrow(geo.mat2)
+geo.mat2$GEOPRECISION[is.miss] <- "adm1"
+geo.mat2$LOCATION3 <- gsub("^Darfur,","Zalingei,",geo.mat2$LOCATION3)
+while(prop.miss>.01){
+  print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
+  for(i in rev(is.miss)){
+    geo.out <- geoCode(address = as.character(geo.mat2$LOCATION3[i]),key=TRUE)
+    # geo.out <- geoCode3(query = geo.mat2$LOCATION[i],boundingBox = paste0(c(bbx[2,2],bbx[1,1],bbx[2,1],bbx[1,2]),collapse=","))
+    print(paste(i,geo.out[4]))
+    geo.mat2$ADDRESS[i] <- geo.out[4]
+    geo.mat2$LONG[i] <- geo.out[2]
+    geo.mat2$LAT[i] <- geo.out[1]
+  }
+  is.miss <- which(is.na(geo.mat2$LONG))
+  prop.miss <- length(is.miss)/nrow(geo.mat2)
+}
+geo.mat2.backup <- geo.mat2
+geo.mat2[is.miss,]
+head(geo.mat2)
+tail(geo.mat2)
+#i <- 134
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP5_v2.RData")
+
+
+# Fix addresses outside Darfur
+load("Input/Events/ABA/ABA_GEO_TEMP5_v2.RData")
+head(geo.mat2)
+map <- readRDS("Input/GIS/Borders/GADM/SDN_adm1.rds")
+map <- map[grep("Darfur",map$NAME_1),]
+coords.temp <- data.frame(LONG=as.numeric(geo.mat2$LONG),LAT=as.numeric(geo.mat2$LAT))
+plot(map)
+o <- over(SpatialPoints(coords = coords.temp,proj4string = CRS(proj4string(map))),map)
+geo.mat2$LONG[which(is.na(o$OBJECTID))] <- NA
+geo.mat2$LAT[which(is.na(o$OBJECTID))] <- NA
+geo.mat2$ADDRESS[which(is.na(o$OBJECTID))] <- NA
+geo.mat2$GEOPRECISION[which(is.na(o$OBJECTID))] <- "adm1"
+
+is.miss <- which(is.na(geo.mat2$LONG))
+prop.miss <- length(is.miss)/nrow(geo.mat2)
+geo.mat2$GEOPRECISION[is.miss] <- "adm1"
+while(prop.miss>.01){
+  print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
+  for(i in rev(is.miss)){
+    geo.out <- geoCode(address = as.character(geo.mat2$LOCATION3[i]),key=TRUE)
+    # geo.out <- geoCode3(query = geo.mat2$LOCATION[i],boundingBox = paste0(c(bbx[2,2],bbx[1,1],bbx[2,1],bbx[1,2]),collapse=","))
+    print(paste(i,geo.out[4]))
+    geo.mat2$ADDRESS[i] <- geo.out[4]
+    geo.mat2$LONG[i] <- geo.out[2]
+    geo.mat2$LAT[i] <- geo.out[1]
+  }
+  is.miss <- which(is.na(geo.mat2$LONG))
+  prop.miss <- length(is.miss)/nrow(geo.mat2)
+}
+geo.mat2.backup <- geo.mat2
+geo.mat2[is.miss,]
+
+save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP6_v2.RData")
+
+
+###
+# Merge back
+###
+load("Input/Events/ABA/ABA_GEO_TEMP6_v2.RData")
+geo.mat2.backup <- geo.mat2
+unique(geo.mat2.backup$LAT)
+head(geo.mat2)
+tail(geo.mat2)
 
 # # Merge back
-geo.mat2$TEMP <- 1:nrow(geo.mat2)
-geo.mat2.a <- geo.mat2[-is.miss,]
-geo.mat2.b <- geo.mat2[is.miss,]
-tail(geo.mat2.b)
-geo.mat2.b$ADDRESS <- geo.mat2.b$LAT <- geo.mat2.b$LONG <- NULL
-geo.mat2.b <- merge(geo.mat2.b,geo.mat3,by="LOCATION",all.x=TRUE)
-geo.mat2.x <- rbind(geo.mat2.a,geo.mat2.b)
-geo.mat2.x <- geo.mat2.x[order(geo.mat2.x$TEMP),]
-geo.mat2.x$TEMP <- NULL
-geo.mat2 <- geo.mat2.x
-head(geo.mat2.x)
-tail(geo.mat2)
-save(geo.mat2,file="Input/Events/ABA/ABA_GEO_TEMP.RData")
-head(geo.mat2)
-tail(geo.mat2)
-geo.mat2[1:100,]
-#load("Input/Events/ABA/ABA_GEO_GEO_TEMP.RData")
+geo.mat$TEMP2 <- paste0(geo.mat$LOCATION,"_",geo.mat$LOCATION2,"_",geo.mat$LOCATION3,"_",geo.mat$LOCATION4)
+geo.mat2$TEMP2 <- paste0(geo.mat2$LOCATION,"_",geo.mat2$LOCATION2,"_",geo.mat2$LOCATION3,"_",geo.mat2$LOCATION4)
 
-# Merge back
-# Recreate old location variable
-old.loc <- sort(unique(geo.mat$LOCATION))
-geo.mat2$LOCATION <- old.loc
-head(geo.mat2)
+geo.mat.backup <- geo.mat
+# geo.mat <- geo.mat.backup
 geo.mat$TEMP <- 1:nrow(geo.mat)
 geo.mat$ADDRESS <- geo.mat$LAT <- geo.mat$LONG <- NULL
-geo.mat <- merge(geo.mat,geo.mat2,by="LOCATION",all.x=TRUE)
-geo.mat <- geo.mat[order(geo.mat$TEMP),]
 head(geo.mat)
+
+geo.mat.a <- merge(geo.mat,geo.mat2[,c("TEMP2","ADDRESS","LONG","LAT","GEOPRECISION")],by="TEMP2",all.x=TRUE)
+geo.mat.a <- geo.mat.a[order(geo.mat.a$TEMP),]
+geo.mat.b <- merge(geo.mat,geo.mat2[,c("LOCATION2","ADDRESS","LONG","LAT","GEOPRECISION")],by="LOCATION2",all.x=TRUE)
+geo.mat.b <- geo.mat.b[order(geo.mat.b$TEMP),]
+geo.mat.c <- merge(geo.mat,geo.mat2[,c("LOCATION4","ADDRESS","LONG","LAT","GEOPRECISION")],by="LOCATION4",all.x=TRUE)
+geo.mat.c <- geo.mat.c[order(geo.mat.c$TEMP),]
+geo.mat.d <- merge(geo.mat,geo.mat2[,c("LOCATION","ADDRESS","LONG","LAT","GEOPRECISION")],by="LOCATION",all.x=TRUE)
+geo.mat.d <- geo.mat.d[order(geo.mat.d$TEMP),]
+
+# Combine
+mean(geo.mat.a$GEOPRECISION%in%"adm2")
+mean(geo.mat.b$GEOPRECISION%in%"adm2")
+mean(geo.mat.c$GEOPRECISION%in%"adm2")
+mean(geo.mat.d$GEOPRECISION%in%"adm2")
+mean(is.na(geo.mat.a$LONG))
+mean(is.na(geo.mat.b$LONG))
+mean(is.na(geo.mat.c$LONG))
+mean(is.na(geo.mat.d$LONG))
+
+# # FInd optimal set
+# geo.mat.e <- geo.mat.a
+# geo.mat.e$LONG[is.na(geo.mat.e$LONG)|geo.mat.e$LONG==""] <- geo.mat.d$LONG[is.na(geo.mat.e$LONG)|geo.mat.e$LONG==""]
+# geo.mat.e$LAT[is.na(geo.mat.e$LAT)|geo.mat.e$LAT==""] <- geo.mat.d$LAT[is.na(geo.mat.e$LAT)|geo.mat.e$LAT==""]
+# geo.mat.e$ADDRESS[is.na(geo.mat.e$ADDRESS)|geo.mat.e$ADDRESS==""] <- geo.mat.d$ADDRESS[is.na(geo.mat.e$ADDRESS)|geo.mat.e$ADDRESS==""]
+# geo.mat.e$GEOPRECISION[is.na(geo.mat.e$GEOPRECISION)|geo.mat.e$GEOPRECISION==""] <- geo.mat.d$GEOPRECISION[is.na(geo.mat.e$GEOPRECISION)|geo.mat.e$GEOPRECISION==""]
+# tail(geo.mat.e)
+
+mean(geo.mat.d$LOCATION==geo.mat$LOCATION)
+geo.mat <- geo.mat.d
+head(geo.mat)
+tail(geo.mat)
 head(data)
 
 # Add coordinates
 data$LONG <- as.numeric(as.character(geo.mat$LONG))
 data$LAT <- as.numeric(as.character(geo.mat$LAT))
-#data$iso3 <- as.character("UKR")
+data$GEOPRECIS <- as.character(geo.mat$GEOPRECISION)
+tail(geo.mat)
+
+# Fix precision codes
+data$GEOPRECIS[grep("Darfur|Zalingei",geo.mat$ADDRESS)] <- "adm1"
 
 # Saving
-head(data)
+tail(data)
 summary(data)
 #unique(data$LONG)
 #unique(data$LAT)
 aba.raw <- data
-#save(aba.raw,file="Input/Events/ABA/ABA_GEO.RData")
-load("Input/Events/ABA/ABA_GEO.RData")
+save(aba.raw,file="Input/Events/ABA/ABA_GEO_v2.RData")
+load("Input/Events/ABA/ABA_GEO_v2.RData")
 head(aba.raw)
 tail(aba.raw)
 unique(aba.raw$LAT)
@@ -1745,8 +1799,8 @@ tail(nvms.raw)
 rm(list=ls())
 
 ## Set directory
-#setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
-setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
+setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
+# setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 # setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 
 ## Install & load packages (all at once)
@@ -1772,7 +1826,8 @@ data$ISO3 <- "RWA"
 dim(data) #885 by 118
 
 #Geocoding
-geo.mat <- data.frame(LOCATION=paste(data$Kecamatan1,data$Kecamatan2, data$Provinsi, data$kabupaten, data$COUNTRY, sep=", "),ADDRESS="",LONG=NA,LAT=NA)
+# geo.mat <- data.frame(LOCATION=paste0(gsub("(\\b[a-z]{1})", "\\U\\1" ,data$commune, perl=TRUE),", ",data$prefecture,", ",data$COUNTRY),ADDRESS="",LONG=NA,LAT=NA)
+geo.mat <- data.frame(LOCATION=paste0(gsub("(\\b[a-z]{1})", "\\U\\1" ,data$commune, perl=TRUE),", ",data$COUNTRY),ADDRESS="",LONG=NA,LAT=NA)
 geo.mat$ADDRESS <- as.character(geo.mat$ADDRESS)
 geo.mat$LOCATION <- as.character(geo.mat$LOCATION)
 
@@ -1782,7 +1837,7 @@ geo.mat2$ADDRESS <- as.character(geo.mat2$ADDRESS)
 geo.mat2$LOCATION <- as.character(geo.mat2$LOCATION)
 
 # Initial pass (w/ Google)
-i <- 2
+i <- 1
 for(i in 1:nrow(geo.mat2)){
   geo.out <- geoCode(geo.mat2$LOCATION[i],key=TRUE)
   print(paste(i,"of",nrow(geo.mat2)," ",geo.out[4]))
@@ -1791,8 +1846,8 @@ for(i in 1:nrow(geo.mat2)){
   geo.mat2$LAT[i] <- geo.out[1]
 }
 tail(geo.mat2)
-save(geo.mat2,file="Input/Events/NVMS/NVMS_GEO_TEMP.RData")
-#load("Input/Events/NVMS/NVMS_GEO_TEMP.RData")
+save(geo.mat2,file="Input/Events/Davenport/Rwanda/DavenportRwanda_GEO_TEMP.RData")
+#load("Input/Events/Davenport/Rwanda/DavenportRwanda_GEO_TEMP.RData")
 head(geo.mat2)
 tail(geo.mat2)
 
@@ -1802,7 +1857,7 @@ prop.miss <- length(is.miss)/nrow(geo.mat2)
 while(prop.miss>.05){
   print(paste("Proportion missing:",round(prop.miss,2),"; N missing=",length(is.miss)))
   for(i in rev(is.miss)){
-    geo.out <- geoCode(address = geo.mat2$LOCATION[i],key=TRUE)
+    geo.out <- geoCode(address = geo.mat2$LOCATION[i],key=FALSE)
     # geo.out <- geoCode3(query = geo.mat2$LOCATION[i],boundingBox = paste0(c(bbx[2,2],bbx[1,1],bbx[2,1],bbx[1,2]),collapse=","))
     print(paste(i,geo.out[4]))
     geo.mat2$ADDRESS[i] <- geo.out[4]
@@ -1812,8 +1867,9 @@ while(prop.miss>.05){
   is.miss <- which(is.na(geo.mat2$LONG))
   prop.miss <- length(is.miss)/nrow(geo.mat2)
 }
-save(geo.mat2,file="Input/Events/NVMS/NVMS_GEO_TEMP2.Rdata")
-#load("Input/Events/NVMS/NVMS_GEO_TEMP2.RData")
+
+save(geo.mat2,file="Input/Events/Davenport/Rwanda/DavenportRwanda_GEO_TEMP2.RData")
+#load("Input/Events/Davenport/Rwanda/DavenportRwanda_GEO_TEMP2.RData")
 
 
 
@@ -1832,14 +1888,15 @@ head(data)
 # Add coordinates
 data$LONG <- as.numeric(as.character(geo.mat$LONG))
 data$LAT <- as.numeric(as.character(geo.mat$LAT))
+data$ADDRESS <- as.character(geo.mat$ADDRESS)
 
 # Saving
 head(data)
 summary(data)
-nvms.raw <- data
-save(nvms.raw,file="Input/Events/NVMS/NVMS_GEO.RData")
-head(nvms.raw)
-tail(nvms.raw)
+davenport.raw <- data
+save(davenport.raw,file="Input/Events/Davenport/Rwanda/DavenportRwanda_GEO.RData")
+head(davenport.raw)
+
 
 
 
