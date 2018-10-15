@@ -308,10 +308,6 @@ The following event datasets should be placed in the `/Input/Events`
 
 <<<<<<< HEAD
 -   [Northern Ireland Research Initiative (NIRI)](https://niresearchinitiative.weebly.com/)
-=======
--   [Northern Ireland Research Initiative (NIRI)]
-    (https://niresearchinitiative.weebly.com/)
->>>>>>> 03e2704cb568f21664734b3943662c7de80426b8
 
     -   Davenport, Christian, Cyanne Loyle, and Christopher Sullivan. 
         Northern Ireland Research Initiative. (February 9, 2017).
