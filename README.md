@@ -4,7 +4,7 @@ xSub Replication Code
 This repository contains R code to replicate all data files at
 <http://www.x-sub.org>.
 
--   xSub version 1.0, February 2018.
+-   xSub version 2.0, October 2018.
 
 System Requirements
 ===================
@@ -17,12 +17,12 @@ Successful execution of xSub replication scripts requires:
 
 -   user account with read/write privileges
 
--   R installation (tested on R version 3.4.3)
+-   R installation (tested on R version 3.4.4)
 
 -   GDAL installation (tested on GDAL 1.11.3)
 
 -   R packages (installs automatically if missing):
-    `gdata, countrycode, maptools, foreign, plotrix, sp, raster, rgeos, spatstat, parallel, foreach`
+    `gdata, countrycode, maptools, foreign, plotrix, sp, raster, rgeos, spatstat, parallel, foreach, meltt`
 
 Compilation is also possible with a Windows operating system, but user
 will need to manually replace parallelization routines from the
@@ -81,7 +81,7 @@ entails five steps:
     xSub uses a separate dictionary for each conflict and source to map
     disparate actors mentioned in event reports to our categories of
     `SIDEA`, `SIDEB`, `SIDEC`, `SIDED`, and to map reported actions to
-    our categories of `ANY`, `SEL`, `IND`, `PRT`.
+    our categories of `ANY`, `DIR`, `IND`, `PRT`.
 
     -   <span>*To create your own actor and event dictionaries*</span>:
         For each data source that requires an actor dictionary (e.g.
@@ -198,7 +198,7 @@ The following event datasets should be placed in the `/Input/Events`
     -   <http://muse.jhu.edu/article/387199/pdf>
 
 -   [Armed Conflict Location and Event Data
-    Project (ACLED)](http://www.acleddata.com/) / version 7
+    Project (ACLED)](http://www.acleddata.com/) / version 8
 
     -   Raleigh, Clionadh, Andrew Linke, Hvard Hegre, and
         Joakim Karlsen. “Introducing ACLED: An armed conflict location
@@ -306,6 +306,13 @@ The following event datasets should be placed in the `/Input/Events`
 
     -   <http://www.snpk-indonesia.com/>
 
+-   [Northern Ireland Research Initiative (NIRI)](https://niresearchinitiative.weebly.com/)
+
+    -   Davenport, Christian, Cyanne Loyle, and Christopher Sullivan. 
+        Northern Ireland Research Initiative. (February 9, 2017).
+
+    -   <https://niresearchinitiative.weebly.com/>
+
 -   [Political Instability Task Force / Worldwide Atrocities
     Dataset](http://eventdata.parusanalytics.com/data.dir/atrocities.html)
     / version 1.1b1
@@ -327,7 +334,7 @@ The following event datasets should be placed in the `/Input/Events`
     -   <https://www.strausscenter.org/scad.html>
 
 -   [UCDP / Georeferenced Event Dataset](http://ucdp.uu.se/) / version
-    17.2
+    171
 
     -   Sundberg, Ralph, and Erik Melander. “Introducing the UCDP
         Georeferenced Event Dataset.” *Journal of Peace Research*

@@ -1,8 +1,8 @@
 rm(list=ls())
 
 ## Set directory
-#setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
-setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
+setwd("~/Dropbox2/Dropbox (Zhukov research team)/XSub/Data/")
+# setwd("C:/Users/nadiya/Dropbox (Zhukov research team)/XSub/Data")
 
 ## Install & load packages (all at once)
 list.of.packages <- c("gdata","countrycode","maptools","foreign","plotrix","sp","raster","rgeos","gdata")
@@ -18,68 +18,76 @@ source("Code/functions.R")
 ## Clean up data
 #############################
 
-# Load events
-#1995-2012
-pitf.raw <- read.csv("Input/Events/PITF/pitf_1995_2012.csv")
-pitf.raw[pitf.raw$country=="CAR",] <- pitf.raw[pitf.raw$country=="CAF",]
-pitf.raw[pitf.raw$country=="GZS",] <- pitf.raw[pitf.raw$country=="PSE",]
-pitf.raw[pitf.raw$country=="IRQ ",] <- pitf.raw[pitf.raw$country=="IRQ",]
-pitf.raw[pitf.raw$country=="NGR",] <- pitf.raw[pitf.raw$country=="NGA",]
-pitf.raw[pitf.raw$country=="SOM ",] <- pitf.raw[pitf.raw$country=="SOM",]
-pitf.raw[pitf.raw$country=="SYR ",] <- pitf.raw[pitf.raw$country=="SYR",]
-pitf.raw[pitf.raw$country=="SUD",] <- pitf.raw[pitf.raw$country=="SDN",]
-pitf.raw[pitf.raw$country=="THL",] <- pitf.raw[pitf.raw$country=="THA",]
-pitf.raw[pitf.raw$country=="TMP",] <- pitf.raw[pitf.raw$country=="TLS",]
-tail(pitf.raw)
-colnames(pitf.raw)
+data1 <- read.csv("Input/Events/PITF/pitf_1995_2012.csv")
+data1$X <- data1$X.1 <- NULL
+data2 <- read.csv("Input/Events/PITF/pitf_2013_2015.csv")
+data2$X <- data2$X.1 <- NULL
+data3 <- read.csv("Input/Events/PITF/pitf.world.20160101-20170930.csv")
+data3$X <- data3$X.1 <- NULL
 
-load("Dictionaries/PITF/PITF_1995_2012/PITF_PSE_Actors.RData")
+# Make columns consistent
+names(data1)[!names(data1)%in%names(data2)]
+names(data2)[!names(data2)%in%names(data1)]
+# names(data2)[!names(data2)%in%names(data1)] <- names(data1)[!names(data1)%in%names(data2)]
+names(data1)[!names(data1)%in%names(data3)]
+names(data3)[!names(data3)%in%names(data1)]
+names(data3)[!names(data3)%in%names(data1)] <- names(data1)[!names(data1)%in%names(data3)]
+names(data2)[!names(data2)%in%names(data3)]
+names(data3)[!names(data3)%in%names(data2)]
 
-#2013-2015
-pitf.raw <- read.csv("Input/Events/PITF/pitf_2013_2015.csv")
-pitf.raw[pitf.raw$country=="ALG",] <- pitf.raw[pitf.raw$country=="DZA",]
-pitf.raw[pitf.raw$country=="BRZ",] <- pitf.raw[pitf.raw$country=="BRA",]
-pitf.raw[pitf.raw$country=="ELS",] <- pitf.raw[pitf.raw$country=="SLV",]  
-pitf.raw[pitf.raw$country=="SYR  ",] <- pitf.raw[pitf.raw$country=="SYR",] 
-pitf.raw[pitf.raw$country=="THL",] <- pitf.raw[pitf.raw$country=="THA",] 
+# Fix column formats
+lvarz <- names(data1)[grepl("LAT_|LONG_",names(data1))&(!grepl("Direction$",names(data1)))]
+for(j in seq_along(lvarz)){
+  data1[,lvarz[j]] <- as.numeric(as.character(data1[,lvarz[j]]))
+  data2[,lvarz[j]] <- as.numeric(as.character(data2[,lvarz[j]]))
+  data3[,lvarz[j]] <- as.numeric(as.character(data3[,lvarz[j]]))
+}
+classez<-c();for(j in 1:ncol(data1)){classez[j]<-class(data1[,j]);if(classez[j]=="factor"){data1[,j]<-as.character(data1[,j])}}
+classez<-c();for(j in 1:ncol(data2)){classez[j]<-class(data2[,j]);if(classez[j]=="factor"){data2[,j]<-as.character(data2[,j])}}
+classez<-c();for(j in 1:ncol(data3)){classez[j]<-class(data3[,j]);if(classez[j]=="factor"){data3[,j]<-as.character(data3[,j])}}
 
-#2016
-pitf.raw <- read.csv("Input/Events/PITF/pitf.world.20160101-20161231.csv") 
+# Merge
+commonvars <- intersect(names(data1),names(data2))
+commonvars <- intersect(commonvars,names(data3))
+data <- rbind(data1[,commonvars],data2[,commonvars],data3[,commonvars])
+head(data); rm(data1,data2,data3,commonvars)
 
-# Clean up
-countrylist <- sort(unique(as.character(pitf.raw$country)))
-countrylist <- data.frame(country=countrylist,iso3=countrylist)
+# Country codes
+countrylist <- sort(unique(as.character(data$country)))
+countrylist <- data.frame(country=countrylist,iso3=countrycode(countrylist,origin="iso3c",destination="iso3c"))
 for(j in 1:2){countrylist[,j]<-as.character(countrylist[,j])}
+countrylist[is.na(countrylist$iso3),]
+countrylist[countrylist$country=="ALG","iso3"] <- countrycode("Algeria","country.name","iso3c")
+countrylist[countrylist$country=="BRZ","iso3"] <- countrycode("Brazil","country.name","iso3c")
+countrylist[countrylist$country=="CAR","iso3"] <- countrycode("Central African Republic","country.name","iso3c")
+countrylist[countrylist$country=="ELS","iso3"] <- countrycode("El Salvador","country.name","iso3c")
+countrylist[countrylist$country=="GZS","iso3"] <- countrycode("Gaza","country.name","iso3c")
+countrylist[countrylist$country=="\nIRQ","iso3"] <- countrycode("Iraq","country.name","iso3c")
+countrylist[countrylist$country=="IRQ ","iso3"] <- countrycode("Iraq","country.name","iso3c")
+countrylist[countrylist$country=="NGR","iso3"] <- countrycode("Nigeria","country.name","iso3c")
+countrylist[countrylist$country=="SOM ","iso3"] <- countrycode("Somalia","country.name","iso3c")
+countrylist[countrylist$country=="SUD","iso3"] <- countrycode("Sudan","country.name","iso3c")
+countrylist[countrylist$country=="SYR ","iso3"] <- countrycode("Syria","country.name","iso3c")
+countrylist[countrylist$country=="THL","iso3"] <- countrycode("Thailand","country.name","iso3c")
+countrylist[countrylist$country=="\nYEM","iso3"] <- countrycode("Yemen","country.name","iso3c")
+pitf.raw <- merge(data,countrylist,by="country",all.x=T,all.y=T)
+pitf.raw <- pitf.raw[!is.na(pitf.raw$iso3),]
+# save(pitf.raw,file="Input/Events/PITF/pitf_1995_2017.RData")
 
-#for the second dataset only
-# countrylist[countrylist$country=="\nIRQ","iso3"] <- countrycode("Iraq","country.name","iso3c")
-# countrylist[countrylist$country=="\nYEM","iso3"] <- countrycode("Yemen","country.name","iso3c")
-# countrylist[countrylist$country=="\nIRQ","country"] <- countrycode("Iraq","country.name","iso3c")
-# countrylist[countrylist$country=="\nYEM","country"] <- countrycode("Yemen","country.name","iso3c")
-# pitf.raw[pitf.raw$country=="\nIRQ","iso3"] <- countrycode("Iraq","country.name","iso3c")
-# pitf.raw[pitf.raw$country=="\nYEM","iso3"] <- countrycode("Yemen","country.name","iso3c")
-# pitf.raw[pitf.raw$country=="\nIRQ","country"] <- countrycode("Iraq","country.name","iso3c")
-# pitf.raw[pitf.raw$country=="\nYEM","country"] <- countrycode("Yemen","country.name","iso3c")
-
-
-pitf.raw <- merge(pitf.raw,countrylist,by="country",all.x=T,all.y=T)
-
-#1995-2012
-save(pitf.raw,file="Input/Events/PITF/pitf_1995_2012.RData")
-
-#2013-2015
-save(pitf.raw,file="Input/Events/PITF/pitf_2013_2015.RData")
-
-#2016
-save(pitf.raw,file="Input/Events/PITF/pitf_20160101_20161231.RData")
 
 #############################
 ## Create actor dictionary
 #############################
 
+countrylist <- countrylist[!is.na(countrylist$iso3),]
+dir("Dictionaries/PITF/PITF_1995_2012/")
+dir("Dictionaries/PITF/")
+countrylist <- countrylist[countrylist$iso3%in%countrylist$iso3[!countrylist$iso3%in%gsub("PITF_|_Actors.RData","",dir("Dictionaries/PITF"))],]
+
 # Loop by country (first line finds k where you left off)
 k0 <- max(which(countrylist$iso3%in%gsub("PITF_|_Actors.RData","",dir("Dictionaries/PITF/"))))+1
 k0
+
 for(k in 1:nrow(countrylist)){
   subdata <- pitf.raw[pitf.raw$country%in%c(countrylist[k,"country"]),]
   print(countrylist[k,"country"])

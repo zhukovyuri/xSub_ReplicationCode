@@ -1,8 +1,8 @@
 # Event types
 types.general <- c(
 "ANY", # any use of force
-"IND", # indiscriminate force (e.g. indirect fire, shelling, air strikes, chemical weapons
-"SEL", # selective force (e.g. direct fire, arrest, assassination)
+"IND", # indirect violence (e.g. indiscriminate force, indirect fire, shelling, air strikes, chemical weapons
+"DIR", # direct violence (e.g. selective force, direct fire, arrest, assassination)
 "PRT" # protest
 )
 types.specific <- c(
