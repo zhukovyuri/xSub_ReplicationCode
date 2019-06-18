@@ -4,6 +4,7 @@ detachAllPackages <- function() {
   package.list <- setdiff(package.list,basic.packages)
   if (length(package.list)>0)  for (package in package.list) detach(package, character.only=TRUE)
 }
+
 detachAllPackages()
 rm(list=ls())
 cat("\014")

@@ -1,5 +1,6 @@
 actorType <- function(data.raw,textvar,actor.type=actor.type){
   
+
   # Create empty matrix
   actors <- as.data.frame(matrix(NA,nrow=nrow(data.raw),ncol=(1+ncol(actor.type))))
   names(actors) <- c(textvar,names(actor.type))

@@ -3,6 +3,7 @@
 ## Google geocode
 ########################################
 
+
 goo.key <- "AIzaSyAaVMlQFb7gDjFyaByW37d0X8VTIZ9FoiQ"
 
 ## Install & load packages (all at once)
