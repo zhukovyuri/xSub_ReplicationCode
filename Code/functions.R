@@ -4,7 +4,7 @@
 ########################################
 
 
-goo.key <- "AIzaSyAaVMlQFb7gDjFyaByW37d0X8VTIZ9FoiQ"
+goo.key <- "MYKEY"
 
 ## Install & load packages (all at once)
 list.of.packages <- c("RCurl","RJSONIO","plyr")
